@@ -41,7 +41,32 @@ class CommandK extends HTMLElement {
                 searchFunction(searchField, this.shadowRoot);
             }
         });
+        // if click outside, close the dialog
+        this.shadowRoot.querySelector('#command-k').addEventListener('click', (e) => {
+            if (e.target.tagName === 'DIALOG') {
+                this.shadowRoot.querySelector('#command-k').close();
+            }
+        });
+    }
+
+    // open the dialog if Search link poressed
+    open() {
+        this.shadowRoot.querySelector('#command-k').showModal();
+        this.shadowRoot.querySelector('#command-k-search-field').focus();
     }
 }
 
 customElements.define('command-k', CommandK);
+
+// override browser command+k
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'k' && e.metaKey) {
+        console.log('command k');
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    if (e.key === 'k' && e.ctrlKey) {
+        e.preventDefault();
+        document.querySelector('command-k').open();
+    }
+});
