@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Command K Web Component</title>
+
+        <link rel="icon" href="https://breakfastand.coffee/logo.png" type="image/x-icon" />
+        
+        <meta name="description" content="Preview the MediaWiki markup generated from a URL that will be posted to Breakfast and Coffee.">
+        <meta property="og:image" content="https://screenshot.jamesg.blog/?url=https://create.breakfastand.coffee">
+
+        <style>
+            html, body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 0;
+                line-height: 1.5;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            nav {
+                background-color: #EA8FEA;
+                color: black;
+                padding: 1em;
+            }
+            nav ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                justify-content: space-between;
+            }
+            nav li {
+                display: inline-block;
+            }
+            nav a {
+                color: black;
+                text-decoration: none;
+            }
+            nav a:hover {
+                text-decoration: underline;
+            }
+            main {
+                max-width: 35em;
+                margin: auto;
+            }
+            input, input[type="search"] {
+                padding: 0.5em;
+                border: 1px solid #ccc;
+                border-radius: 0.25em;
+                font-size: 1em;
+                width: 100%;
+            }
+            input[type="submit"] {
+                background-color: #EA8FEA;
+                color: black;
+                border: none;
+                cursor: pointer;
+            }
+            pre {
+                background-color: #eee;
+                padding: 1em;
+                border-radius: 0.25em;
+                margin: 1em 0;
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+            footer {
+                text-align: center;
+                padding: 1em;
+            }
+            .callout {
+                min-height: 100px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #FCC2FC;
+            }
+        </style>
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <li><a href="/">Command K Web Component</a></li>
+                <li><a href="https://jamesg.blog">Made by capjamesg</a></li>
+            </ul>
+        </nav>
+        <main>
+            <h1>Command K Web Component 💻</h1>
+            <p>A web component that opens a search box when you press <kbd>Command</kbd> + <kbd>K</kbd> on your keyboard.</p>
+            <p class="callout">Press &nbsp; <kbd>Command</kbd> + <kbd>K</kbd> &nbsp; to try it out. ⌨️</p>
+            <h2>How it Works</h2>
+            <p>This page has a web component that is loaded in the <code>&lt;command-k&gt;</code> tag. The web component is loaded from the <code>commandk.js</code> file.</p>
+            <p>This web component opens a dialog box when you press <kbd>Command</kbd> + <kbd>K</kbd> on your keyboard. The dialog box has a search field and a list of search results.</p>
+            <p>The list of search results is retrieved by executing a function called <code>searchFunction</code>. This function is passed the search field and the shadow root of the web component.</p>
+            <p>This function is kept separate from the web component so that you can define the search logic separately in your application.</p>
+            <p>The web component is styled by taking all tags in a <code>&lt;template&gt;</code> tag and adding them to the shadow root of the web component.</p>
+            <h2>Set it Up</h2>
+            <p>First, add the <code>commandk.js</code> file to your project.</p>
+            <pre>&lt;script src="commandk.js"&gt;&lt;/script&gt;</pre>
+            <p>Then, add the <code>&lt;command-k&gt;</code> tag to your page.</p>
+            <pre>&lt;command-k&gt;&lt;/command-k&gt;</pre>
+            <p>Finally, define the <code>searchFunction</code> function.</p>
+            <pre>function searchFunction(searchField, shadowRoot) {
+    // Use the query to add li elements to the shadow root
+}
+            </pre>
+            <h2>Search Function Examples</h2>
+            <h3>Query a JSON API</h3>
+            <pre>
+function searchFunction (searchField, shadowRoot) {
+fetch(`http://localhost:3001/search?q=${searchField.value}`)
+    .then((response) => response.json())
+    .then((data) => {
+        data.forEach((result) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = result.url;
+            a.innerText = result.title;
+            li.appendChild(a);
+            shadowRoot.querySelector('#command-k-search-results').appendChild(li);
+        });
+    });
+}
+            </pre>
+            <h3>Search Through a List of JSON Objects</h3>
+            <pre>
+function searchFunction (searchField, shadowRoot) {
+    var docs = [
+        {
+            "title": "Command K Web Component",
+            "url": "https://commandk.jamesg.blog"
+        }
+    ]
+
+    var results = [];
+
+    for (var i = 0; i < docs.length; i++) {
+        if (docs[i].title.toLowerCase().includes(searchField.value.toLowerCase())) {
+            results.push(docs[i]);
+        }
+    }
+
+    for (var i = 0; i < results.length; i++) {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = results[i].url;
+        a.innerText = results[i].title;
+        li.appendChild(a);
+        shadowRoot.querySelector('#command-k-search-results').appendChild(li);
+    }
+}
+</pre>
+            <footer>
+                <p>Command K Web Component was made with ❤️, 🧇 and ☕️ by <a href="https://jamesg.blog">capjamesg</a>. <a href="https://github.com/capjamesg/commandk.js">View Source</a>.</p>
+            </footer>
+        </main>
+        <template>
+            <style>
+                * {
+                    box-sizing: border-box;
+                    font-family: sans-serif;
+                }
+                input, input[type="search"] {
+                    padding: 0.5em;
+                    border: 1px solid #ccc;
+                    border-radius: 0.25em;
+                    font-size: 1em;
+                    width: 100%;
+                }
+                button, input[type="submit"] {
+                    background-color: #EEBAB2;
+                    color: black;
+                    border: none;
+                    cursor: pointer;
+                    width: 100%;
+                    padding: 10px;
+                }
+                menu {
+                    margin: 0;
+                    padding: 0;
+                }
+                ul {
+                    padding: 0;
+                }
+                ul li {
+                    list-style: none;
+                    padding: 1em;
+                    border-bottom: 1px solid #ccc;
+                }
+                ul li:hover {
+                    background-color: #eee;
+                }
+                ul li:last-child {
+                    border-bottom: none;
+                }
+                a {
+                    text-decoration: none;
+                    color: black;
+                }
+                input {
+                    box-sizing: border-box;
+                }
+                #command-k {
+                    max-width: 30em;
+                    width: 30em !important;
+                    overflow: hidden;
+                }
+                #command-k-search-results {
+                    max-height: 30em;
+                    overflow-y: scroll;
+                    padding: 0;
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                    list-style: none;
+                    border-bottom: 1px solid #ccc;
+                }
+                #command-k-search-results li:hover {
+                    background-color: #eee;
+                }
+            </style>
+        </template>
+        <command-k></command-k>
+        <script src="commandk.js"></script>
+    <script>
+    //   function searchFunction (searchField, shadowRoot) {
+    //     fetch(`http://localhost:3001/search?q=${searchField.value}`)
+    //       .then((response) => response.json())
+    //       .then((data) => {
+    //           data.forEach((result) => {
+    //               const li = document.createElement('li');
+    //               const a = document.createElement('a');
+    //               a.href = result.url;
+    //               a.innerText = result.title;
+    //               li.appendChild(a);
+    //               shadowRoot.querySelector('#command-k-search-results').appendChild(li);
+    //           });
+    //       });
+    //     }
+    function searchFunction (searchField, shadowRoot) {
+        var docs = [
+            {
+                "title": "Command K Web Component",
+                "url": "https://commandk.jamesg.blog"
+            }
+        ]
+
+        var results = [];
+
+        for (var i = 0; i < docs.length; i++) {
+            if (docs[i].title.toLowerCase().includes(searchField.value.toLowerCase())) {
+                results.push(docs[i]);
+            }
+        }
+
+        for (var i = 0; i < results.length; i++) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = results[i].url;
+            a.innerText = results[i].title;
+            li.appendChild(a);
+            shadowRoot.querySelector('#command-k-search-results').appendChild(li);
+        }
+    }
+    </script>
+</body>
+</html>
